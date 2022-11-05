@@ -25,7 +25,7 @@
       <div class="productContainer">
          <div v-for="(item, index) in product" :key="item.id">
             <p>{{item.title}}</p>
-            <img :src="item.image" v-bind:alt="item.title">
+            <img :src="item.image" v-bind:alt="item.title"> 
             <p>{{item.price}}元</p>
             <div>
                <button v-on:click="reduceCount(index)">-</button>

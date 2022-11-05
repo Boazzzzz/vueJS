@@ -1,59 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Calc</title>
-</head>
-<body>
-  <div id="app">
-      <button 
-      v-for="num in 9"
-      :key="num"
-      @click="keyin = num"
-      >
-         {{num}}
-      </button>
-      <button @click="keyin = 0">
-         0
-      </button>
-      {{keyin}}
-      <br>
-      <button @click="reduce">-</button>
-      <button @click="add">+</button>
-      <button @click="calc">=</button>
-      <button @click="clear">c</button>
-      <div>
-         step: {{step}}
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>計算機</title>
+   </head>
+   <body>
+      <div id="app">
+         <div class="numBtns">
+            <div id="display" class="keyin">{{ current }}</div>
+            <button @click="clear">AC</button>
+            <button @click="sign">+/-</button>
+            <button @click="percentage">%</button>
+            <button v-for="num in 9" :key="num" @click="keyNumber(num)">
+               {{num}}
+            </button>
+            <button @click="dot">.</button>
+            <button @click="keyNumber(0)">0</button>
+            <button @click="equal">=</button>
+         </div>
+         <div class="numBtns numBtns-calc">
+            <button @click="clear">←</button>
+            <button @click="divide">/</button>
+            <button @click="times">*</button>
+            <button @click="minus">-</button>
+            <button @click="add">+</button>
+         </div>
       </div>
-      <h6>result: {{result}}</h6>
-   </div>
-   <script src="https://unpkg.com/vue@next"></script>
-   <script>
-      Vue.createApp({
-         data() {
-            return {
-               step: '',
-               result: 0
-            }
-         },
-         
-         methods: {
-            reduce() {
-               this.result -= 1
-            }
-            add() {
-               this.result += 1
-            }
-            clac() {
-               this.result += 1
-            }
-            clear() {
-               this.result += 1
-            }
-         },
-      }).mount('#app');
-   </script>
-</body>
+      <script src="https://unpkg.com/vue@next"></script>
+      <script>
+         Vue.createApp({
+            data() {
+               return {
+                  current: "0",
+                  previous: null,
+                  operator: null,
+                  operatorClicked: false,
+               };
+            },
+            methods: {
+               clear() {
+                  this.current = "0";
+               },
+               sign() {
+                  this.current =
+                     this.current.charAt(0) === "-"
+                        ? this.current.slice(1)
+                        : `-${this.current}`;
+               },
+               percentage() {
+                  this.current = `${parseInt(this.current) / 100}`;
+               },
+               keyNumber(number) {
+                  this.current = `${number}`;
+                  if ((this.current = "0")) {
+                     this.current = "";
+                  }
+                  this.current = `${this.current}${number}`;
+               },
+               dot() {
+                  if (this.current.indexOf(".") === -1) {
+                     this.append(".");
+                  }
+               },
+               setPrevious() {
+                  this.previous = this.current;
+                  this.operatorClicked = true;
+               },
+               divide() {
+                  this.operator = (a, b) => a / b;
+                  this.setPrevious();
+               },
+               times() {
+                  this.operator = (a, b) => a * b;
+                  this.setPrevious();
+               },
+               minus() {
+                  this.operator = (a, b) => a - b;
+                  this.setPrevious();
+               },
+               add() {
+                  this.operator = (a, b) => a + b;
+                  this.setPrevious();
+               },
+               equal() {
+                  this.current = `${this.operator(
+                     parseFloat(this.current),
+                     parseFloat(this.previous)
+                  )}`;
+                  this.previous = null;
+               },
+            },
+         }).mount("#app");
+      </script>
+   </body>
 </html>
+<style>
+   #display {
+      width: 100%;
+      height: 3rem;
+      background-color: #fff;
+      margin: 0 0 1.2rem 1.2rem;
+   }
+   #app {
+      display: inline-flex;
+   }
+   .numBtns {
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      width: 12rem;
+   }
+   .numBtns-calc {
+      display: flex;
+      flex-direction: column;
+      width: 3.6rem;
+      justify-content: flex-start;
+      margin-top: 4.2rem;
+   }
+   button {
+      margin: 0.25rem;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      background-color: #eee;
+      box-shadow: -6px -6px 9px 0px white, 6px 6px 9px rgba(0, 0, 0, 0.4);
+   }
+   button:hover {
+      background-color: #999;
+   }
+   .numBtns button {
+      flex-basis: 3rem;
+      height: 3rem;
+   }
+   .keyin {
+      background-color: #ddd;
+      font-size: 2.4rem;
+   }
+</style>
