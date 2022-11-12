@@ -23,7 +23,7 @@
          <p v-if="lists.length === 0">沒有商品</p>
          <ul v-else>
             <li v-for="(list, index) in lists" :key="list">
-               <p>{{ index + 1 }}. {{ list }}</p>
+               <p>{{index + 1}}. {{list}}</p>
                <span @click="removeItem(index)">❌</span>
             </li>
          </ul>
