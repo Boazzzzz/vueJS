@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link
+         rel="stylesheet"
+         type="text/css"
+         href="https://unpkg.com/view-ui-plus/dist/styles/viewuiplus.css"
+      />
+      <title>Components</title>
+   </head>
+   <body>
+      <div id="app">
+         <cry-cry :crytext="1213213213123" />
+         <cry-cry :crytext="2" />
+         <cry-cry :crytext="3" />
+         <cry-cry :crytext="4" />
+      </div>
+      <script src="https://unpkg.com/vue@next"></script>
+      <script>
+         const app = Vue.createApp({
+            components: {
+               template: (
+                  <div>
+                     <h6>123</h6>
+                     <p>321321321</p>
+                  </div>
+               ),
+               props: ["crytext"],
+            },
+         });
+
+         app.component("cry-cry", {
+            template: (
+               <div>
+                  <h6>123</h6>
+                  <p>321321321</p>
+               </div>
+            ),
+            props: ["crytext"],
+            data() {
+               return {};
+            },
+         });
+
+         app.mount("#app");
+      </script>
+   </body>
+</html>
